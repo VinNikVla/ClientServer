@@ -35,9 +35,6 @@ private:
     QLayout* layout;
 
     QWidget* createControlWiget(const ControlTypes::TypeControl& type);
-//    void createSlider();
-//    void createButton(const TypeControl& type);
-//    void createSpinBox();
 
 };
 

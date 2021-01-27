@@ -12,16 +12,20 @@ class Conditioner : public QObject
 {
     Q_OBJECT
 public:
-    Conditioner(Settings* set, const QString& _ip, const quint16& _port, QObject* parent=nullptr);
+    Conditioner(Settings* _set, const QString& _ip, const quint16& _port, QObject* parent=nullptr);
 
 public slots:
     void changeValue(const ControlTypes::Conditioner& typeParameter, const double value);
-    void changeChangeTypeMeasurements(const ControlTypes::Conditioner& _type, const QString &type);
+    void changeTypeMeasurementsTemperature(const QString& type);
+    void changeTypePressure(const QString& type);
 
 signals:
     void signalChangesTypeMeasurement(double value);
-    void signalValueChanged(const QString& value);
+    void signalTemperatureChanged(const QString value);
+    void signalPressureChanged(const QString value);
+
 private:
+    Settings* m_set;
      double m_temperature;
      ControlTypes::TypeDisplayTemperature typeTemperature;
 
@@ -35,9 +39,7 @@ private:
      quint16 m_port;
 
      void unitConverter( const ControlTypes::TypeDisplayTemperature type);
-
-
-     //void newCommand(
+     void convertPressure(const ControlTypes::TypeDisplayPressure type);
 };
 
 #endif // CONDITIONER_H

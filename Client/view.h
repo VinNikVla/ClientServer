@@ -25,10 +25,10 @@ class View : public QWidget
 {
     Q_OBJECT
 public:
-    explicit View(const ControlTypes::Conditioner& _type,const QString& _name, const bool createMenu, QWidget *parent = nullptr);
-
+    explicit View(const QString& _name, const bool avaliableMenu, QWidget *parent = nullptr, const QVector<QString>* _measurement = nullptr);
+    QString getName() const;
 signals:
-    void signalChangeTypeMeasurements(const ControlTypes::Conditioner _type, const QString& type);
+    void signalChangeTypeMeasurements(const QString& type);
 
 public slots:
     void slotActivated(QAction* pAction);
@@ -40,13 +40,15 @@ private:
     QLabel* type;
     QMenu* menu;
     QLayout* layout;
+    QString m_name;
+    bool mustPushed;
+    const QVector<QString>* m_measurement;
 
-    ControlTypes::Conditioner valueType;
 
     void createButton();
     void createMenu();
 
-    bool mustPushed;
+
 };
 
 #endif // VIEW_H

@@ -16,6 +16,7 @@
 
 #include "view.h"
 #include "control.h"
+#include "global.h"
 namespace Ui {
 class Widget;
 }
@@ -26,6 +27,7 @@ class Widget : public QWidget
 
 public:
     explicit Widget(QWidget *parent = 0);
+    View* getView(QString key);
     ~Widget();
 signals:
 
@@ -34,9 +36,8 @@ public slots:
 
 private:
     Ui::Widget *ui;
-    QVector<QWidget*> elementsOnGUI;
-    void customMenuRequested(QWidget* button);
-    //QHBoxLayout* createElement(QWidget*...);
+    QMap<QString, View*> elementsOnGUI;
+
 
 };
 

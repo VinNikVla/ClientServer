@@ -2,6 +2,7 @@
 #define GLOBAL_H
 
 #include <QString>
+#include <QVector>
 
 namespace ControlTypes {
 enum class TypeControl:quint8
@@ -35,6 +36,9 @@ enum class TypeDisplayPressure: bool
     MillimetersOfMercury
 };
 
+
+const QVector<QString> stringTypeTemperature = { "°C", "°F", "K"};
+const QVector<QString> stringTypePressure = {"мм.рт.ст", "Па"};
 
 }
 #endif // GLOBAL_H

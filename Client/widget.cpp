@@ -7,39 +7,55 @@ Widget::Widget(QWidget *parent) :
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
+
     QVBoxLayout* Vlayout = new QVBoxLayout(this);
+
     QLabel* state = new QLabel("State", this);
     state->setFrameStyle(QFrame::Plain | QFrame::StyledPanel);
     Vlayout->addWidget(state);
 
-    View* newWidget1 = new View(ControlTypes::Conditioner::Temperature, "Temperature", true, this);
-    Vlayout->addWidget(newWidget1);
+    View* viewTemperature = new View("ViewTemperature", true, this, &ControlTypes::stringTypeTemperature);
+    Vlayout->addWidget(viewTemperature);
+    elementsOnGUI[viewTemperature->getName()] = viewTemperature;
 
-    View* newWidget2 = new View(ControlTypes::Conditioner::Humadity, "Humadity", true, this);
-    Vlayout->addWidget(newWidget2);
+    View* viewPressure = new View("ViewPressure", true, this,  &ControlTypes::stringTypePressure);
+    Vlayout->addWidget(viewPressure);
+    elementsOnGUI[viewPressure->getName()] = viewPressure;
 
-    View* newWidget3 = new View(ControlTypes::Conditioner::Pressure, "Pressure", false, this);
-    Vlayout->addWidget(newWidget3);
+    View*  viewHimadity = new View("ViewHumadity", false, this);
+    Vlayout->addWidget(viewHimadity);
+    elementsOnGUI[viewHimadity->getName()] = viewHimadity;
 
     QLabel* control = new QLabel("Control", this);
-    //control->setFrameStyle(QFrame::Plain | QFrame::StyledPanel);
     control->setFrameShape(QFrame::StyledPanel);
     Vlayout->addWidget(control);
 
-    Control* temperature = new Control("Temperature", ControlTypes::TypeControl::HorizontalSlider, this);
+    Control* temperature = new Control("ControlTemperature", ControlTypes::TypeControl::HorizontalSlider, this);
     Vlayout->addWidget(temperature);
+    //elementsOnGUI[viewPressure->getName()] = viewPressure;
 
     Control* onOff = new Control("System of Conditioner", ControlTypes::TypeControl::Button, this);
     Vlayout->addWidget(onOff);
+    //elementsOnGUI[viewPressure->getName()] = viewPressure;
 
     Control* direction = new Control("Air flow direction", ControlTypes::TypeControl::HorizontalSlider, this);
     Vlayout->addWidget(direction);
+    //elementsOnGUI[viewPressure->getName()] = viewPressure;
 
 
 
     setLayout(Vlayout);
 
-    //ui
+}
+
+View *Widget::getView(QString key)
+{
+    if(elementsOnGUI.contains(key))
+    {
+            return elementsOnGUI[key];
+    }
+
+    qDebug() << "Unknown key";
 }
 
 Widget::~Widget()
@@ -52,7 +68,3 @@ void Widget::slotActivated(QAction *pAction)
     qDebug() << pAction->text();
 }
 
-void Widget::customMenuRequested(QWidget *button)
-{
-
-}
