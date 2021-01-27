@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 
     Settings* set = new Settings(&a);
 
-    set->setTypeTemperature(Settings::TypeDisplayTemperature::Kelvin);
+    set->setTypeTemperature(ControlTypes::TypeDisplayTemperature::Kelvin);
 
     Widget w;
     w.show();

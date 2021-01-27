@@ -26,11 +26,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         widget.cpp \
-    settings.cpp
+    settings.cpp \
+    view.cpp \
+    control.cpp \
+    conditioner.cpp \
+    global.cpp
 
 HEADERS += \
         widget.h \
-    settings.h
+    settings.h \
+    view.h \
+    control.h \
+    global.h \
+    conditioner.h
 
 FORMS += \
         widget.ui

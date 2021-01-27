@@ -15,7 +15,12 @@ Settings::~Settings()
     writeMe();
 }
 
-void Settings::setTypePressure(const Settings::TypeDisplayPressure &pressure)
+ControlTypes::TypeDisplayPressure Settings::getTypePressure() const
+{
+    return typePressure;
+}
+
+void Settings::setTypePressure(const ControlTypes::TypeDisplayPressure &pressure)
 {
     if(pressure == typePressure)
         return;
@@ -23,7 +28,7 @@ void Settings::setTypePressure(const Settings::TypeDisplayPressure &pressure)
     typePressure = pressure;
 }
 
-void Settings::setTypeTemperature(const Settings::TypeDisplayTemperature &temperature)
+void Settings::setTypeTemperature(const ControlTypes::TypeDisplayTemperature &temperature)
 {
     if(temperature == typeTemperature)
         return;
@@ -31,10 +36,15 @@ void Settings::setTypeTemperature(const Settings::TypeDisplayTemperature &temper
     typeTemperature = temperature;
 }
 
+ControlTypes::TypeDisplayTemperature Settings::getTypeTemperature() const
+{
+    return typeTemperature;
+}
+
 void Settings::readMe()
 {
-    typePressure = static_cast<TypeDisplayPressure>(set->value("TypeTemperature").toUInt());
-    typeTemperature = static_cast<TypeDisplayTemperature>(set->value("TypePressure").toBool());
+    typePressure = static_cast<ControlTypes::TypeDisplayPressure>(set->value("TypeTemperature").toUInt());
+    typeTemperature = static_cast<ControlTypes::TypeDisplayTemperature>(set->value("TypePressure").toBool());
 
 }
 

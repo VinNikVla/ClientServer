@@ -5,6 +5,7 @@
 #include <QSettings>
 #include <QDebug>
 #include <QVariant>
+#include "global.h"
 
 
 
@@ -15,29 +16,16 @@ public:
     Settings(QObject * parent = nullptr);
     ~Settings();
 
-    enum class TypeDisplayTemperature: quint16
-    {
-        Celsius,
-        Kelvin,
-        Fahrenheit
-    };
+    ControlTypes::TypeDisplayPressure getTypePressure() const;
+    ControlTypes::TypeDisplayTemperature getTypeTemperature() const;
 
-    enum class TypeDisplayPressure: bool
-    {
-        Pascal,
-        MillimetersOfMercury
-    };
+    void setTypePressure(const ControlTypes::TypeDisplayPressure& pressure);
+    void setTypeTemperature(const ControlTypes::TypeDisplayTemperature& temperature);
 
 
-
-    TypeDisplayPressure getTypePressure() const;
-    TypeDisplayTemperature getTypeTemperature() const;
-
-    void setTypePressure(const TypeDisplayPressure& pressure);
-    void setTypeTemperature(const TypeDisplayTemperature& temperature);
 private:
-    TypeDisplayTemperature typeTemperature;
-    TypeDisplayPressure typePressure;
+    ControlTypes::TypeDisplayTemperature typeTemperature;
+    ControlTypes::TypeDisplayPressure typePressure;
     QSettings* set = nullptr;
 
     void readMe();
