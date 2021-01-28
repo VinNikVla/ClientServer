@@ -31,7 +31,9 @@ SOURCES += \
     control.cpp \
     conditioner.cpp \
     global.cpp \
-    udpclient.cpp
+    udpclient.cpp \
+    elementongui.cpp \
+    valuemodel.cpp
 
 HEADERS += \
         widget.h \
@@ -40,7 +42,9 @@ HEADERS += \
     control.h \
     global.h \
     conditioner.h \
-    udpclient.h
+    udpclient.h \
+    elementongui.h \
+    valuemodel.h
 
 FORMS += \
         widget.ui

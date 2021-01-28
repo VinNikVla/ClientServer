@@ -18,14 +18,17 @@ public:
 
     QString getTypePressure() const;
     QString getTypeTemperature() const;
+    QString getTypeHumadity() const;
 
     void setTypePressure(const QString& pressure);
     void setTypeTemperature(const QString& temperature);
+    void setTypeHumadity(const QString& humadity);
 
 
 private:
     QString typeTemperature;
     QString typePressure;
+    QString typeHumadity;
     QSettings* set = nullptr;
 
     void readMe();

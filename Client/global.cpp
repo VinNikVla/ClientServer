@@ -16,14 +16,17 @@ QDebug operator <<(QDebug debug, const ControlTypes::Conditioner &state)
             debug.nospace() << "Влажность";
             break;
         case ControlTypes::Conditioner::Direction:
-            debug.nospace() << "Направление";
+            debug.nospace() << "Направление потока воздуха";
             break;
 
         case ControlTypes::Conditioner::OnOff :
             debug.nospace() << "Включение/Выключение";
             break;
+        case ControlTypes::Conditioner::Request :
+            debug.nospace() << "Запросить данные";
+            break;
         default:
-            debug.nospace() << "Неизвестный тип управления";
+            debug.nospace() << "Неизвестный тип параметра";
             break;
         }
 

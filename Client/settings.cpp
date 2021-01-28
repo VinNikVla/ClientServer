@@ -36,22 +36,37 @@ void Settings::setTypeTemperature(const QString& temperature)
     typeTemperature = temperature;
 }
 
+void Settings::setTypeHumadity(const QString &humadity)
+{
+    if(humadity == typeHumadity)
+        return;
+
+    typeHumadity = humadity;
+}
+
 QString Settings::getTypeTemperature() const
 {
     return typeTemperature;
+}
+
+QString Settings::getTypeHumadity() const
+{
+    return typeHumadity;
 }
 
 void Settings::readMe()
 {
     typePressure = set->value("TypePressure", "мм.рт.ст").toString();
     typeTemperature = set->value("TypeTemperature", "°C").toString();
+    typeHumadity = set->value("TypeHumadity", "%").toString();
 
 }
 
 void Settings::writeMe()
 {
-    qDebug() << typeTemperature << " " << typePressure;
+    qDebug() << typeTemperature << " " << typePressure << " " << typeHumadity;
     set->setValue("TypePressure", typePressure);
     set->setValue("TypeTemperature", typeTemperature);
+    set->setValue("TypeHumadity", typeHumadity);
     set->sync();
 }

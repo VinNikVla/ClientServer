@@ -22,7 +22,7 @@ Widget::Widget(QWidget *parent) :
     Vlayout->addWidget(viewPressure);
     elementsOnGUI[viewPressure->getName()] = viewPressure;
 
-    View*  viewHimadity = new View("ViewHumadity", false, this);
+    View*  viewHimadity = new View("ViewHumadity", false, this, &ControlTypes::stringTypeHumadity);
     Vlayout->addWidget(viewHimadity);
     elementsOnGUI[viewHimadity->getName()] = viewHimadity;
 

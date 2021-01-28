@@ -7,6 +7,7 @@
 #include <chrono>
 #include "global.h"
 #include "settings.h"
+#include <QByteArray>
 
 typedef union {
     int x;
@@ -21,11 +22,13 @@ public:
     Conditioner(Settings* _set, const QString& _ip, const quint16& _port, QObject* parent=nullptr);
 
 public slots:
-    void changeValue(const ControlTypes::Conditioner& typeParameter, const double value);
+    void changeValue(const ControlTypes::Conditioner& typeParameter, const int value);
     void slotChangeTypeTemperature(const QString& type);
     void slotChangeTypePressure(const QString& type);
+    void slotChangeTypeHumadity(const QString& type);
 
     void sendCommand(const ControlTypes::Conditioner& typeParameter, const int value);
+    void responseFromServer(QString senderIP, int senderPort, QByteArray data);
 
 
 signals:
@@ -45,12 +48,13 @@ private:
     QString typePressure;
 
     double m_humadity;
+    QString typeHumadity;
 
     QMap<ControlTypes::Conditioner, double*> m_map;
     QString m_ip;
     quint16 m_port;
 
-    QByteArray com;//отправляемый массив данных на com-порт
+    QByteArray com;//отправляемый массив данных на cервер/клиент
 
 };
 

@@ -43,15 +43,17 @@ void View::slotActivated(QAction *pAction)
 
 void View::slotChangeValue(const QString &value)
 {
+    qDebug() << value;
     button->setText(value);
 }
 
 void View::createButton()
 {
     button = new QPushButton(this);
+
     button->setFlat(true);
 
-        button->setDisabled(!mustPushed);
+        //button->setDisabled(!mustPushed);
 
 }
 

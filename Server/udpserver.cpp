@@ -9,7 +9,7 @@ UDPclient::UDPclient(QString _ownIp, QString _ip, int _port, QObject *parent, in
    ownPort(_ownPort!=0? _ownPort : _port)
 {
     sock=new QUdpSocket(this);
-    Connect();
+   // Connect();
 }
 
 bool UDPclient::Connect()
