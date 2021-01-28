@@ -68,12 +68,6 @@ void View::createMenu()
         }
     }
 
-//    menu->addAction("°C");
-//    menu->addSeparator();
-//    menu->addAction("°F");
-//    menu->addSeparator();
-//    menu->addAction(" K");
-
     connect(menu, SIGNAL(triggered(QAction*)), SLOT(slotActivated(QAction*)));
 
     button->setMenu(menu);

@@ -8,6 +8,12 @@
 #include "global.h"
 #include "settings.h"
 
+typedef union {
+    int x;
+    quint8 ch[4];
+
+} intToChar;
+
 class Conditioner : public QObject
 {
     Q_OBJECT
@@ -16,30 +22,36 @@ public:
 
 public slots:
     void changeValue(const ControlTypes::Conditioner& typeParameter, const double value);
-    void changeTypeMeasurementsTemperature(const QString& type);
-    void changeTypePressure(const QString& type);
+    void slotChangeTypeTemperature(const QString& type);
+    void slotChangeTypePressure(const QString& type);
+
+    void sendCommand(const ControlTypes::Conditioner& typeParameter, const int value);
+
 
 signals:
-    void signalChangesTypeMeasurement(double value);
     void signalTemperatureChanged(const QString value);
     void signalPressureChanged(const QString value);
+    void signalHumadityChanged(const QString value);
+
+    void sendCommandToServer(QByteArray data, QString& receiver);
 
 private:
     Settings* m_set;
-     double m_temperature;
-     ControlTypes::TypeDisplayTemperature typeTemperature;
 
-     double m_pressure;
-     ControlTypes::TypeDisplayPressure typePressure;
+    double m_temperature;
+    QString typeTemperature;
 
-     double m_humadity;
+    double m_pressure;
+    QString typePressure;
 
-     QMap<ControlTypes::Conditioner, double*> m_map;
-     QString m_ip;
-     quint16 m_port;
+    double m_humadity;
 
-     void unitConverter( const ControlTypes::TypeDisplayTemperature type);
-     void convertPressure(const ControlTypes::TypeDisplayPressure type);
+    QMap<ControlTypes::Conditioner, double*> m_map;
+    QString m_ip;
+    quint16 m_port;
+
+    QByteArray com;//отправляемый массив данных на com-порт
+
 };
 
 #endif // CONDITIONER_H

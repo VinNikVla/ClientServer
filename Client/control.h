@@ -22,19 +22,25 @@ class Control : public QWidget
 {
     Q_OBJECT
 public:
-    explicit Control(const QString& _name,const ControlTypes::TypeControl& _type, QWidget *parent = nullptr);
-
+    explicit Control(const QString& _name, const ControlTypes::Conditioner& _typeHandler, const ControlTypes::TypeControl& _type, QWidget *parent = nullptr);
+    QString getName() const;
 signals:
     //void valueChanged
+    void valueChanged(ControlTypes::Conditioner _type, const int);
 public slots:
     //void response(QByteArray
-
+private slots:
+    void handlerSignal(const int value);
 private:
     QWidget* controlWidget;
-    QLabel* type;
+    QLabel* nameHandler;
     QLayout* layout;
+    ControlTypes::Conditioner typeHandler;
+    ControlTypes::TypeControl typeControl;
 
+    QString m_name;
     QWidget* createControlWiget(const ControlTypes::TypeControl& type);
+    void createSignalForWidget();
 
 };
 

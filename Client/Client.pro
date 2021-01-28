@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -30,7 +30,8 @@ SOURCES += \
     view.cpp \
     control.cpp \
     conditioner.cpp \
-    global.cpp
+    global.cpp \
+    udpclient.cpp
 
 HEADERS += \
         widget.h \
@@ -38,7 +39,8 @@ HEADERS += \
     view.h \
     control.h \
     global.h \
-    conditioner.h
+    conditioner.h \
+    udpclient.h
 
 FORMS += \
         widget.ui

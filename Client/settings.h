@@ -16,16 +16,16 @@ public:
     Settings(QObject * parent = nullptr);
     ~Settings();
 
-    ControlTypes::TypeDisplayPressure getTypePressure() const;
-    ControlTypes::TypeDisplayTemperature getTypeTemperature() const;
+    QString getTypePressure() const;
+    QString getTypeTemperature() const;
 
-    void setTypePressure(const ControlTypes::TypeDisplayPressure& pressure);
-    void setTypeTemperature(const ControlTypes::TypeDisplayTemperature& temperature);
+    void setTypePressure(const QString& pressure);
+    void setTypeTemperature(const QString& temperature);
 
 
 private:
-    ControlTypes::TypeDisplayTemperature typeTemperature;
-    ControlTypes::TypeDisplayPressure typePressure;
+    QString typeTemperature;
+    QString typePressure;
     QSettings* set = nullptr;
 
     void readMe();

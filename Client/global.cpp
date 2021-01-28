@@ -1,19 +1,31 @@
 #include "global.h"
 
-ControlTypes::TypeDisplayTemperature toTypeDisplayTemperature(const QString& type)
+
+QDebug operator <<(QDebug debug, const ControlTypes::Conditioner &state)
 {
-    if(type == " K")
-    {
-        return ControlTypes::TypeDisplayTemperature::Kelvin;
-    }
+        QDebugStateSaver saver(debug);
 
-    if(type == "°C")
-    {
-        return ControlTypes::TypeDisplayTemperature::Celsius;
-    }
+        switch (state) {
+        case ControlTypes::Conditioner::Temperature:
+            debug.nospace() << "Температура";
+            break;
+        case ControlTypes::Conditioner::Pressure:
+            debug.nospace() << "Давление";
+            break;
+        case ControlTypes::Conditioner::Humadity:
+            debug.nospace() << "Влажность";
+            break;
+        case ControlTypes::Conditioner::Direction:
+            debug.nospace() << "Направление";
+            break;
 
-    if(type == "°F")
-    {
-        return ControlTypes::TypeDisplayTemperature::Fahrenheit;
-    }
+        case ControlTypes::Conditioner::OnOff :
+            debug.nospace() << "Включение/Выключение";
+            break;
+        default:
+            debug.nospace() << "Неизвестный тип управления";
+            break;
+        }
+
+        return debug;
 }

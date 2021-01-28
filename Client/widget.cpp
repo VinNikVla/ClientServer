@@ -30,16 +30,16 @@ Widget::Widget(QWidget *parent) :
     control->setFrameShape(QFrame::StyledPanel);
     Vlayout->addWidget(control);
 
-    Control* temperature = new Control("ControlTemperature", ControlTypes::TypeControl::HorizontalSlider, this);
-    Vlayout->addWidget(temperature);
-    //elementsOnGUI[viewPressure->getName()] = viewPressure;
+    Control* controlTemperature = new Control("ControlTemperature", ControlTypes::Conditioner::Temperature, ControlTypes::TypeControl::HorizontalSlider, this);
+    Vlayout->addWidget(controlTemperature);
+    controlOnGUI[controlTemperature->getName()] = controlTemperature;
 
-    Control* onOff = new Control("System of Conditioner", ControlTypes::TypeControl::Button, this);
-    Vlayout->addWidget(onOff);
-    //elementsOnGUI[viewPressure->getName()] = viewPressure;
+//    Control* onOff = new Control("System of Conditioner", ControlTypes::TypeControl::Button, this);
+//    Vlayout->addWidget(onOff);
+//    //elementsOnGUI[viewPressure->getName()] = viewPressure;
 
-    Control* direction = new Control("Air flow direction", ControlTypes::TypeControl::HorizontalSlider, this);
-    Vlayout->addWidget(direction);
+//    Control* direction = new Control("Air flow direction", ControlTypes::TypeControl::HorizontalSlider, this);
+//    Vlayout->addWidget(direction);
     //elementsOnGUI[viewPressure->getName()] = viewPressure;
 
 
@@ -53,6 +53,16 @@ View *Widget::getView(QString key)
     if(elementsOnGUI.contains(key))
     {
             return elementsOnGUI[key];
+    }
+
+    qDebug() << "Unknown key";
+}
+
+Control *Widget::getControl(QString key)
+{
+    if(controlOnGUI.contains(key))
+    {
+            return controlOnGUI[key];
     }
 
     qDebug() << "Unknown key";

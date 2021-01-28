@@ -28,6 +28,7 @@ class Widget : public QWidget
 public:
     explicit Widget(QWidget *parent = 0);
     View* getView(QString key);
+    Control* getControl(QString key);
     ~Widget();
 signals:
 
@@ -37,6 +38,7 @@ public slots:
 private:
     Ui::Widget *ui;
     QMap<QString, View*> elementsOnGUI;
+    QMap<QString, Control*> controlOnGUI;
 
 
 };

@@ -15,12 +15,12 @@ Settings::~Settings()
     writeMe();
 }
 
-ControlTypes::TypeDisplayPressure Settings::getTypePressure() const
+QString Settings::getTypePressure() const
 {
     return typePressure;
 }
 
-void Settings::setTypePressure(const ControlTypes::TypeDisplayPressure &pressure)
+void Settings::setTypePressure(const QString& pressure)
 {
     if(pressure == typePressure)
         return;
@@ -28,7 +28,7 @@ void Settings::setTypePressure(const ControlTypes::TypeDisplayPressure &pressure
     typePressure = pressure;
 }
 
-void Settings::setTypeTemperature(const ControlTypes::TypeDisplayTemperature &temperature)
+void Settings::setTypeTemperature(const QString& temperature)
 {
     if(temperature == typeTemperature)
         return;
@@ -36,22 +36,22 @@ void Settings::setTypeTemperature(const ControlTypes::TypeDisplayTemperature &te
     typeTemperature = temperature;
 }
 
-ControlTypes::TypeDisplayTemperature Settings::getTypeTemperature() const
+QString Settings::getTypeTemperature() const
 {
     return typeTemperature;
 }
 
 void Settings::readMe()
 {
-    typePressure = static_cast<ControlTypes::TypeDisplayPressure>(set->value("TypeTemperature").toUInt());
-    typeTemperature = static_cast<ControlTypes::TypeDisplayTemperature>(set->value("TypePressure").toBool());
+    typePressure = set->value("TypePressure", "мм.рт.ст").toString();
+    typeTemperature = set->value("TypeTemperature", "°C").toString();
 
 }
 
 void Settings::writeMe()
 {
-    qDebug() << static_cast<unsigned int>(typeTemperature);
-    set->setValue("TypePressure", static_cast<bool>(typePressure));
-    set->setValue("TypeTemperature", static_cast<unsigned int>(typeTemperature));
+    qDebug() << typeTemperature << " " << typePressure;
+    set->setValue("TypePressure", typePressure);
+    set->setValue("TypeTemperature", typeTemperature);
     set->sync();
 }
