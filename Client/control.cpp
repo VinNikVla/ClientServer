@@ -22,6 +22,11 @@ QString Control::getName() const
     return m_name;
 }
 
+Control::~Control()
+{
+    qDebug() << "Control destructor";
+}
+
 void Control::handlerSignal(const int value)
 {
     emit valueChanged(typeHandler, value);

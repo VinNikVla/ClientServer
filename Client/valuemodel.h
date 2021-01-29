@@ -1,29 +1,48 @@
-//#pragma once
+#pragma once
 
-//#include <QObject>
-//#include "global.h"
+#include <QObject>
+#include "global.h"
+#include <typeinfo>
 
-////https://evileg.com/ru/post/305/ the same
 
-//class ValueModel :public QObject
-//{
-//    Q_OBJECT
-//public:
-//    ValueModel(QObject* parent = nullptr,DeviceState st = DeviceState::Unknown, QString val="НЕТ");
-//    Q_PROPERTY(int state READ getState  NOTIFY  stateChanged)
-//    int getState() const {return static_cast<int>(m_state);}
-//    DeviceState getDeviceState() const;
-//    void setState(DeviceState ds);
+class ValueModel :public QObject
+{
+    Q_OBJECT
+public:
+    ValueModel(const QVector<QString> *_listMeasurments, const ControlTypes::Conditioner& _typeDetector, const QVector<int>* _border, QObject* parent = nullptr);
 
-//    Q_PROPERTY(QString value READ getValue WRITE setValue NOTIFY valueChanged)
-//    QString getValue() const {return m_value;}
-//    void setValue(QString val);
-//    void setValue(double val,int precision=1);
-//    void setValue(int val);
-//signals:
-//    void stateChanged(DeviceState state);
-//    void  valueChanged();
-//protected:
-//    DeviceState m_state;
-//    QString m_value;
-//};
+    DeviceState getState() const;
+    ControlTypes::Conditioner getTypeDetector() const;
+    QString getTypeMeasurments() const;
+
+public slots:
+    void slotSetValue(int value);
+    virtual void slotChangeTypeValue(const QString& type) = 0;
+
+signals:
+    void signalStateChanged();
+    void signalValueChanged(const QString& value);
+
+protected:
+    QString m_typeMeasurments;
+    ControlTypes::Conditioner m_typeDetector;
+    int m_value;
+    const QVector<int>* m_border;
+
+    bool checkAvailabilityMeasurments(const QString &type);
+
+private slots:
+    void slotSetState();
+
+private:
+    DeviceState m_state = DeviceState::Red;
+
+    const QVector<QString>* m_listMesurments;
+
+
+
+    DeviceState m_changeState();
+
+
+
+};

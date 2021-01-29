@@ -9,6 +9,11 @@
 #include "settings.h"
 #include <QByteArray>
 
+#include "temperature.h"
+#include "pressure.h"
+#include "humadity.h"
+#include <QtGlobal>
+
 typedef union {
     int x;
     quint8 ch[4];
@@ -21,36 +26,42 @@ class Conditioner : public QObject
 public:
     Conditioner(Settings* _set, const QString& _ip, const quint16& _port, QObject* parent=nullptr);
 
+    ValueModel* getDetector(ControlTypes::Conditioner type);
 public slots:
-    void changeValue(const ControlTypes::Conditioner& typeParameter, const int value);
-    void slotChangeTypeTemperature(const QString& type);
-    void slotChangeTypePressure(const QString& type);
-    void slotChangeTypeHumadity(const QString& type);
+//    void changeValue(const ControlTypes::Conditioner& typeParameter, const int value);
+//    void slotChangeTypeTemperature(const QString& type);
+//    void slotChangeTypePressure(const QString& type);
+//    void slotChangeTypeHumadity(const QString& type);
 
     void sendCommand(const ControlTypes::Conditioner& typeParameter, const int value);
     void responseFromServer(QString senderIP, int senderPort, QByteArray data);
 
 
 signals:
-    void signalTemperatureChanged(const QString value);
-    void signalPressureChanged(const QString value);
-    void signalHumadityChanged(const QString value);
+//    void signalTemperatureChanged(const QString value);
+//    void signalPressureChanged(const QString value);
+//    void signalHumadityChanged(const QString value);
 
     void sendCommandToServer(QByteArray data, QString& receiver);
 
 private:
     Settings* m_set;
 
-    double m_temperature;
-    QString typeTemperature;
+    Temperature* m_temperature;
+    Humadity* m_humadity;
+    Pressure* m_pressure;
 
-    double m_pressure;
-    QString typePressure;
+//    double m_temperature;
+//    QString typeTemperature;
 
-    double m_humadity;
-    QString typeHumadity;
+//    double m_pressure;
+//    QString typePressure;
 
-    QMap<ControlTypes::Conditioner, double*> m_map;
+//    double m_humadity;
+//    QString typeHumadity;
+
+    //QMap<ControlTypes::Conditioner, double*> m_map;
+    QMap<ControlTypes::Conditioner, ValueModel*> m_map;
     QString m_ip;
     quint16 m_port;
 

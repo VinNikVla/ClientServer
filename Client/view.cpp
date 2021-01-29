@@ -1,17 +1,21 @@
 #include "view.h"
 
-View::View(const QString& _name, const bool avaliableMenu, QWidget *parent, const QVector<QString>* _measurement) :
+View::View(const ControlTypes::Conditioner &_typeDetector,
+           const bool avaliableMenu,
+           const QVector<QString>* _measurement,
+           QWidget *parent
+           ) :
     QWidget(parent),
-    m_name(_name),
-    mustPushed(avaliableMenu)
+    m_typeDetector(_typeDetector),
+    mustPushed(avaliableMenu),
+   m_measurement(_measurement)
 {
+
     layout = new QHBoxLayout(this);
-    type = new QLabel(_name, this);
+    type = new QLabel(toString(m_typeDetector), this);
     createButton();
 
 
-    if(_measurement)
-        m_measurement = _measurement;
 
     if(avaliableMenu)
     {
@@ -25,14 +29,11 @@ View::View(const QString& _name, const bool avaliableMenu, QWidget *parent, cons
 
     layout->setContentsMargins(13,13,13,13);
     setLayout(layout);
-
-    //connect(this, SIGNAL(signalChangeTypeMeasurements(QString)), this, SLOT(slotChangeValue(QString)));
-
 }
 
-QString View::getName() const
+ControlTypes::Conditioner View::getTypeDetector() const
 {
-    return m_name;
+    return m_typeDetector;
 }
 
 void View::slotActivated(QAction *pAction)
@@ -53,14 +54,14 @@ void View::createButton()
 
     button->setFlat(true);
 
-        //button->setDisabled(!mustPushed);
-
 }
 
 void View::createMenu()
 {
     menu = new QMenu(button);
 
+    if(m_measurement)
+    {
     for(QVector<QString>::const_iterator itb = m_measurement->begin(), ite = m_measurement->end(); itb != ite; ++itb)
     {
         menu->addAction(*itb);
@@ -69,8 +70,10 @@ void View::createMenu()
             menu->addSeparator();
         }
     }
+    }
 
     connect(menu, SIGNAL(triggered(QAction*)), SLOT(slotActivated(QAction*)));
 
     button->setMenu(menu);
+
 }

@@ -14,17 +14,17 @@ Widget::Widget(QWidget *parent) :
     state->setFrameStyle(QFrame::Plain | QFrame::StyledPanel);
     Vlayout->addWidget(state);
 
-    View* viewTemperature = new View("ViewTemperature", true, this, &ControlTypes::stringTypeTemperature);
+    View* viewTemperature = new View(ControlTypes::Conditioner::Temperature, true, &ControlTypes::stringTypeTemperature, this);
     Vlayout->addWidget(viewTemperature);
-    elementsOnGUI[viewTemperature->getName()] = viewTemperature;
+    elementsOnGUI[viewTemperature->getTypeDetector()] = viewTemperature;
 
-    View* viewPressure = new View("ViewPressure", true, this,  &ControlTypes::stringTypePressure);
+    View* viewPressure = new View(ControlTypes::Conditioner::Pressure, true, &ControlTypes::stringTypePressure, this);
     Vlayout->addWidget(viewPressure);
-    elementsOnGUI[viewPressure->getName()] = viewPressure;
+    elementsOnGUI[viewPressure->getTypeDetector()] = viewPressure;
 
-    View*  viewHimadity = new View("ViewHumadity", false, this, &ControlTypes::stringTypeHumadity);
+    View*  viewHimadity = new View(ControlTypes::Conditioner::Humadity, false, &ControlTypes::stringTypeHumadity, this);
     Vlayout->addWidget(viewHimadity);
-    elementsOnGUI[viewHimadity->getName()] = viewHimadity;
+    elementsOnGUI[viewHimadity->getTypeDetector()] = viewHimadity;
 
     QLabel* control = new QLabel("Control", this);
     control->setFrameShape(QFrame::StyledPanel);
@@ -33,6 +33,9 @@ Widget::Widget(QWidget *parent) :
     Control* controlTemperature = new Control("ControlTemperature", ControlTypes::Conditioner::Temperature, ControlTypes::TypeControl::HorizontalSlider, this);
     Vlayout->addWidget(controlTemperature);
     controlOnGUI[controlTemperature->getName()] = controlTemperature;
+
+    statusBar = new QStatusBar(this);
+    Vlayout->addWidget(statusBar);
 
 //    Control* onOff = new Control("System of Conditioner", ControlTypes::TypeControl::Button, this);
 //    Vlayout->addWidget(onOff);
@@ -48,14 +51,14 @@ Widget::Widget(QWidget *parent) :
 
 }
 
-View *Widget::getView(QString key)
+View *Widget::getView(ControlTypes::Conditioner key)
 {
     if(elementsOnGUI.contains(key))
     {
             return elementsOnGUI[key];
     }
 
-    qDebug() << "Unknown key";
+    qDebug() << "Unknown key " << key;
 }
 
 Control *Widget::getControl(QString key)
@@ -76,5 +79,10 @@ Widget::~Widget()
 void Widget::slotActivated(QAction *pAction)
 {
     qDebug() << pAction->text();
+}
+
+void Widget::slotShowMessage(const QString &msg)
+{
+    statusBar->showMessage(msg);
 }
 

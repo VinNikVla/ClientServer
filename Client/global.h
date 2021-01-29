@@ -4,6 +4,8 @@
 #include <QString>
 #include <QVector>
 #include <QDebug>
+#include <QMap>
+#include <QPair>
 
 namespace ControlTypes {
 enum class TypeControl:quint8
@@ -22,8 +24,18 @@ enum class Conditioner: quint8
     Pressure,
     OnOff,
     Direction,
-    Request
+    RequestParameters,
+    CheckConnections
 };
+
+const QVector<Conditioner> command = { Conditioner::Temperature,
+                                       Conditioner::Humadity,
+                                       Conditioner::Pressure/*,
+                                       Conditioner::OnOff,
+                                       Conditioner::Direction,
+                                       Conditioner::RequestParameters,
+                                       Conditioner::CheckConnections*/
+                                     };
 
 enum class TypeElement:quint8
 {
@@ -31,17 +43,26 @@ enum class TypeElement:quint8
     Control
 };
 
+//QMap<Conditioner, QPair<const QVector<QString>*, const QVector<int>*>> mapDetector;
+
 
 
 const QVector<QString> stringTypeTemperature = { "°C", "°F", "K"};
+const QVector<int> stateTemperature = { 60, 100, 40, 59};
 const QVector<QString> stringTypePressure = {"мм.рт.ст", "Па"};
+const QVector<int> statePressure = { 60, 100, 40, 59};
 const QVector<QString> stringTypeHumadity = {"%"};
+const QVector<int> stateHumadity = { 650, 720, 40, 59};
+//const QVecotr<int> stateHumadity = {
 }
 
 
 QDebug operator << (QDebug debug, const ControlTypes::Conditioner &state);
-//QString toString(const  ControlTypes::Conditioner)
-//{
+
+
+QString toString(const ControlTypes::Conditioner &state);
+
+
 
 
 enum class DeviceState: quint8 {

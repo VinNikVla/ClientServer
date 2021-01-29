@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     //    qDebug() << hex << frst << hex << second << hex << value;
     for(int i = 0; i < 3; i++)
     {
-        for(int j = 0; j < 200;j++)
+        for(int j = -100; j < 200;j++)
         {
 
             com[0] = static_cast<quint8>(i);

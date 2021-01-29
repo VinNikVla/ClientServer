@@ -33,7 +33,11 @@ SOURCES += \
     global.cpp \
     udpclient.cpp \
     elementongui.cpp \
-    valuemodel.cpp
+    valuemodel.cpp \
+    customslider.cpp \
+    temperature.cpp \
+    pressure.cpp \
+    humadity.cpp
 
 HEADERS += \
         widget.h \
@@ -44,7 +48,11 @@ HEADERS += \
     conditioner.h \
     udpclient.h \
     elementongui.h \
-    valuemodel.h
+    valuemodel.h \
+    customslider.h \
+    temperature.h \
+    pressure.h \
+    humadity.h
 
 FORMS += \
         widget.ui

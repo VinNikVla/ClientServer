@@ -25,8 +25,9 @@ class View : public QWidget
 {
     Q_OBJECT
 public:
-    explicit View(const QString& _name, const bool avaliableMenu, QWidget *parent = nullptr, const QVector<QString>* _measurement = nullptr);
-    QString getName() const;
+    explicit View(const ControlTypes::Conditioner& _typeDetector, const bool avaliableMenu, const QVector<QString>* _measurement = nullptr, QWidget *parent = nullptr);
+    ControlTypes::Conditioner getTypeDetector() const;
+
 signals:
     void signalChangeTypeMeasurements(const QString& type);
 
@@ -36,13 +37,14 @@ public slots:
 
 
 private:
+    ControlTypes::Conditioner m_typeDetector;
+    bool mustPushed;
+    const QVector<QString>* m_measurement;
     QPushButton* button;
     QLabel* type;
     QMenu* menu;
     QLayout* layout;
-    QString m_name;
-    bool mustPushed;
-    const QVector<QString>* m_measurement;
+
 
 
     void createButton();

@@ -24,6 +24,7 @@ class Control : public QWidget
 public:
     explicit Control(const QString& _name, const ControlTypes::Conditioner& _typeHandler, const ControlTypes::TypeControl& _type, QWidget *parent = nullptr);
     QString getName() const;
+    ~Control();
 signals:
     //void valueChanged
     void valueChanged(ControlTypes::Conditioner _type, const int);

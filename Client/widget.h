@@ -17,6 +17,8 @@
 #include "view.h"
 #include "control.h"
 #include "global.h"
+
+#include <QStatusBar>
 namespace Ui {
 class Widget;
 }
@@ -27,17 +29,19 @@ class Widget : public QWidget
 
 public:
     explicit Widget(QWidget *parent = 0);
-    View* getView(QString key);
+    View* getView(ControlTypes::Conditioner key);
     Control* getControl(QString key);
     ~Widget();
 signals:
 
 public slots:
     void slotActivated(QAction* pAction);
+    void slotShowMessage(const QString& msg);
 
 private:
     Ui::Widget *ui;
-    QMap<QString, View*> elementsOnGUI;
+    QStatusBar* statusBar;
+    QMap<ControlTypes::Conditioner, View*> elementsOnGUI;
     QMap<QString, Control*> controlOnGUI;
 
 
