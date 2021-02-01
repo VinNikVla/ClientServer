@@ -1,146 +1,197 @@
 #include "widget.h"
-#include "ui_widget.h"
 
-
-Widget::Widget(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::Widget)
+Widget::Widget(QWidget *parent)
+    : QWidget(parent)
 {
-    ui->setupUi(this);
+    Pal = palette();
+
+    // устанавливаем цвет фона
+    Pal.setColor(QPalette::Background, Qt::white);
+    setAutoFillBackground(true);
+    setPalette(Pal);
 
     setWindowTitle("Кондиционер Витязь");
 
     QVBoxLayout* Vlayout = new QVBoxLayout(this);
 
-    //
-    ;
 
+    createChangeBackground();
 
+    Vlayout->addWidget(changeBackground);
 
+    createStateBox();
 
-    QLabel* state = new QLabel("State", this);
-    state->setFrameStyle(QFrame::Plain | QFrame::StyledPanel);
     Vlayout->addWidget(state);
 
-    QHBoxLayout* hLayout = new QHBoxLayout(this);
+    createControlBox();
 
-    QLabel* stateName =  new QLabel("Комплексное состояние", this);
-    hLayout->addWidget(stateName);
-
-
-    stateCircle = new CircleState(this);
-
-    hLayout->addWidget(stateCircle);
-    hLayout->setContentsMargins(13,13,13,13);
-
-    Vlayout->addItem(hLayout);
-
-    View* viewTemperature = new View(ControlTypes::Conditioner::Temperature, true, &ControlTypes::stringTypeTemperature, this);
-    Vlayout->addWidget(viewTemperature);
-    elementsOnGUI[viewTemperature->getTypeDetector()] = viewTemperature;
-
-    View* viewPressure = new View(ControlTypes::Conditioner::Pressure, true, &ControlTypes::stringTypePressure, this);
-    Vlayout->addWidget(viewPressure);
-    elementsOnGUI[viewPressure->getTypeDetector()] = viewPressure;
-
-    View*  viewHimadity = new View(ControlTypes::Conditioner::Humadity, false, &ControlTypes::stringTypeHumadity, this);
-    Vlayout->addWidget(viewHimadity);
-    elementsOnGUI[viewHimadity->getTypeDetector()] = viewHimadity;
-
-    QLabel* control = new QLabel("Control", this);
-    control->setFrameShape(QFrame::StyledPanel);
     Vlayout->addWidget(control);
 
-    Control* controlTemperature = new Control(ControlTypes::Conditioner::Temperature, ControlTypes::TypeControl::HorizontalSlider, this);
-    Vlayout->addWidget(controlTemperature);
-    controlOnGUI[ControlTypes::Conditioner::Temperature] = controlTemperature;
-
-
-
-    Control* controlDirection = new Control(ControlTypes::Conditioner::Direction, ControlTypes::TypeControl::HorizontalSlider, this);
-    Vlayout->addWidget(controlDirection);
-    controlOnGUI[controlDirection->getTypeDetector()] = controlDirection;
-
-
-
-    Vlayout->addWidget(new QLabel(toString(ControlTypes::Conditioner::OnOff), this));
-
-    QPushButton* requestState = new QPushButton("Отправить запрос", this);
-    Vlayout->addWidget(requestState);
-
-    statusBar = new QStatusBar(this);
-    Vlayout->addWidget(statusBar);
-
-    slotDisableControl();
     setLayout(Vlayout);
 
-
+    slotEnabledControl(ControlTypes::Conditioner::RequestParameters, 0);
 }
-
-View *Widget::getView(ControlTypes::Conditioner key)
-{
-    if(elementsOnGUI.contains(key))
-    {
-        return elementsOnGUI[key];
-    }
-
-    qDebug() << "Unknown key " << key;
-}
-
-Control *Widget::getControl(ControlTypes::Conditioner key)
-{
-    if(controlOnGUI.contains(key))
-    {
-        return controlOnGUI[key];
-    }
-
-    qDebug() << "Unknown key";
-}
-
-CircleState *Widget::getState() const
-{
-    return stateCircle;
-}
-
 Widget::~Widget()
 {
-    delete ui;
-}
-
-void Widget::slotActivated(QAction *pAction)
-{
-    qDebug() << pAction->text();
 
 }
 
-void Widget::slotShowMessage(const QString &msg)
+AbstractGUI *Widget::getElementOnGUI(ControlTypes::Conditioner key)
 {
-    statusBar->showMessage(msg);
+    for(QVector<AbstractGUI*>::iterator itb = elementsOnGUI.begin(), ite = elementsOnGUI.end(); itb != ite; ++itb)
+    {
+        if((*itb)->getTypeDetector() == key)
+        {
+            qDebug() << "GUI object " << (*itb)->getTypeDetector();
+            return *itb;
+        }
+    }
 }
 
-void Widget::slotEnabledControl()
+const SliderControl *Widget::getControlTemperature() const
 {
+    return temperature;
+}
+
+void Widget::slotEnabledControl(const ControlTypes::Conditioner &type, const int value)
+{
+    Q_UNUSED(type)
     for(auto itb = elementsOnGUI.begin(), ite = elementsOnGUI.end(); itb != ite; ++itb)
     {
-        itb.value()->setEnabled(true);
-    }
-
-    for(auto itb = controlOnGUI.begin(), ite = controlOnGUI.end(); itb != ite; ++itb)
-    {
-        itb.value()->setEnabled(true);
+        qDebug() << (*itb)->getTypeDetector() << static_cast<bool>(value);
+        if(ControlTypes::Conditioner::RequestParameters != (*itb)->getTypeDetector() && ControlTypes::Conditioner::OnOff != (*itb)->getTypeDetector())
+        {
+            (*itb)->setEnabled(value);
+        }
     }
 }
 
-void Widget::slotDisableControl()
+
+void Widget::m_setBackground()
 {
+
+    if(white->isChecked())
+    {
+        setPalette(style()->standardPalette());
+
+    }
+    else if(black->isChecked())
+    {
+
+        // Настраиваем палитру для цветовых ролей элементов интерфейса
+        Pal.setColor(QPalette::Window, QColor(53, 53, 53));
+        Pal.setColor(QPalette::WindowText, Qt::white);
+        Pal.setColor(QPalette::Base, QColor(25, 25, 25));
+        Pal.setColor(QPalette::AlternateBase, QColor(53, 53, 53));
+        Pal.setColor(QPalette::ToolTipBase, Qt::white);
+        Pal.setColor(QPalette::ToolTipText, Qt::white);
+        Pal.setColor(QPalette::Text, Qt::white);
+        Pal.setColor(QPalette::Button, QColor(53, 53, 53));
+        Pal.setColor(QPalette::ButtonText, Qt::white);
+        Pal.setColor(QPalette::BrightText, Qt::red);
+        Pal.setColor(QPalette::Link, QColor(42, 130, 218));
+        Pal.setColor(QPalette::Highlight, QColor(42, 130, 218));
+        Pal.setColor(QPalette::HighlightedText, Qt::black);
+        Pal.setColor(QPalette::Background, Qt::black);
+        setPalette(Pal);
+    }
+
+    //repaint();
+
+    setAutoFillBackground(true);
+}
+
+void Widget::createChangeBackground()
+{
+    changeBackground = new QGroupBox("Тема оформления", this);
+
+    white = new QRadioButton("Светлая", this);
+    white->setChecked(true);
+    black = new QRadioButton("Темная", this);
+
+    connect(white, &QRadioButton::clicked, this, &Widget::m_setBackground);
+    connect(black, &QRadioButton::clicked, this, &Widget::m_setBackground);
+
+    QHBoxLayout* hlayout = new QHBoxLayout(this);
+
+    hlayout->addWidget(white);
+    hlayout->addWidget(black);
+    changeBackground->setLayout(hlayout);
+}
+
+void Widget::createStateBox()
+{
+    QVBoxLayout* hlayout = new QVBoxLayout(this);
+    state = new QGroupBox("Состояния", this);
+
+    elementsOnGUI.append(new HandlerState(ControlTypes::Conditioner::ComplexState, this));
+
+
+    elementsOnGUI.append(new ChangeMeasurmentWidget(true,
+                                                    true,
+                                                    &ControlTypes::measurmentsTemperature,
+                                                    ControlTypes::Conditioner::Temperature,
+                                                    this));
+
+    elementsOnGUI.append(new ChangeMeasurmentWidget(true,
+                                                    true,
+                                                    &ControlTypes::measurmentsPressure,
+                                                    ControlTypes::Conditioner::Pressure,
+                                                    this));
+
+    elementsOnGUI.append(new ChangeMeasurmentWidget(true,
+                                                    false,
+                                                    &ControlTypes::measurmentsHumadity,
+                                                    ControlTypes::Conditioner::Humadity,
+                                                    this));
+
     for(auto itb = elementsOnGUI.begin(), ite = elementsOnGUI.end(); itb != ite; ++itb)
     {
-        itb.value()->setDisabled(true);
+
+        hlayout->addWidget(*itb);
     }
 
-    for(auto itb = controlOnGUI.begin(), ite = controlOnGUI.end(); itb != ite; ++itb)
-    {
-        itb.value()->setDisabled(true);
-    }
+    state->setLayout(hlayout);
 }
+
+void Widget::createControlBox()
+{
+    QVBoxLayout* hlayout = new QVBoxLayout(this);
+    control = new QGroupBox("Управление", this);
+
+    elementsOnGUI.append(new SliderControl("°",
+                                           &ControlTypes::borderDirection,
+                                           10,
+                                           ControlTypes::Conditioner::Direction,
+                                           this));
+
+    temperature = new SliderControl("°C",
+                                    &ControlTypes::borderTemperature,
+                                    1,
+                                    ControlTypes::Conditioner::Temperature,
+                                    this);
+    elementsOnGUI.append(temperature);
+
+    elementsOnGUI.append(new ControlButton(true,
+                                           ControlTypes::Conditioner::OnOff,
+                                           this,
+                                           &ControlTypes::stringTypeServer));
+
+    elementsOnGUI.append( new ControlButton(false,
+                                            ControlTypes::Conditioner::RequestParameters,
+                                            this));
+
+
+    for(auto itb = elementsOnGUI.begin(), ite = elementsOnGUI.end(); itb != ite; ++itb)
+    {
+        if(dynamic_cast<AbstractControl*>(*itb))
+        {
+            hlayout->addWidget(*itb);
+        }
+    }
+
+    control->setLayout(hlayout);
+
+}
+
 

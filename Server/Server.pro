@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2021-01-30T21:25:26
+# Project created by QtCreator 2021-02-01T03:06:25
 #
 #-------------------------------------------------
 
@@ -25,30 +25,36 @@ INCLUDEPATH += $$PWD/../CPP/
 
 SOURCES += \
         main.cpp \
-    ../CPP/UDP/udpserver.cpp \
+        widget.cpp \
+    ../CPP/AbstractConditioner/abstractconditioner.cpp \
+    ../CPP/AbstractUDP/udpclient.cpp \
+    ../CPP/AbstractConditioner/ServerConditioner/serverconditioner.cpp \
+    ../CPP/AbstractValueModel/abstractvaluemodel.cpp \
     ../CPP/global.cpp \
-    ../CPP/ValueModel/valuemodel.cpp \
-    conditionerserver.cpp \
-    ../CPP/humadity.cpp \
-    ../CPP/pressure.cpp \
-    ../CPP/server.cpp \
-    ../CPP/temperature.cpp \
-    gui.cpp \
-    ../CPP/ViewModel/control.cpp \
-    ../CPP/ViewModel/view.cpp
+    ../CPP/AbstrcatViewModel/CustomSlider/Slider/slidersetvalue.cpp \
+    ../CPP/AbstrcatViewModel/CustomSlider/Slider/slidercontrol.cpp \
+    ../CPP/AbstrcatViewModel/abstractgui.cpp \
+    ../CPP/AbstrcatViewModel/CustomSlider/abstractcontrol.cpp \
+    ../CPP/AbstrcatViewModel/CustomSlider/ControlButton/controlbutton.cpp \
+    ../CPP/AbstrcatViewModel/ChangeMeasurments/changemeasurmentwidget.cpp \
+    ../CPP/AbstractValueModel/ChangeStateModel/ChangeMeasurmentsModel/changemeasurment.cpp \
+    ../CPP/AbstractValueModel/ChangeStateModel/changestate.cpp
 
 HEADERS += \
-    ../CPP/UDP/udpserver.h \
+        widget.h \
+    ../CPP/AbstractConditioner/abstractconditioner.h \
+    ../CPP/AbstractUDP/udpclient.h \
+    ../CPP/AbstractConditioner/ServerConditioner/serverconditioner.h \
+    ../CPP/AbstractValueModel/abstractvaluemodel.h \
     ../CPP/global.h \
-    ../CPP/ValueModel/valuemodel.h \
-    conditionerserver.h \
-    ../CPP/humadity.h \
-    ../CPP/pressure.h \
-    ../CPP/server.h \
-    ../CPP/temperature.h \
-    gui.h \
-    ../CPP/ViewModel/control.h \
-    ../CPP/ViewModel/view.h
+    ../CPP/AbstrcatViewModel/CustomSlider/Slider/slidersetvalue.h \
+    ../CPP/AbstrcatViewModel/CustomSlider/Slider/slidercontrol.h \
+    ../CPP/AbstrcatViewModel/abstractgui.h \
+    ../CPP/AbstrcatViewModel/CustomSlider/abstractcontrol.h \
+    ../CPP/AbstrcatViewModel/CustomSlider/ControlButton/controlbutton.h \
+    ../CPP/AbstrcatViewModel/ChangeMeasurments/changemeasurmentwidget.h \
+    ../CPP/AbstractValueModel/ChangeStateModel/ChangeMeasurmentsModel/changemeasurment.h \
+    ../CPP/AbstractValueModel/ChangeStateModel/changestate.h
 
 FORMS += \
-        gui.ui
+        widget.ui

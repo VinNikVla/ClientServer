@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2021-01-26T00:58:00
+# Project created by QtCreator 2021-01-31T15:19:16
 #
 #-------------------------------------------------
 
@@ -26,35 +26,36 @@ INCLUDEPATH += $$PWD/../CPP/
 SOURCES += \
         main.cpp \
         widget.cpp \
-    settings.cpp \
-    conditioner.cpp \
     ../CPP/global.cpp \
-    elementongui.cpp \
-    ../CPP/UDP/udpclient.cpp \
-    ../CPP/ValueModel/valuemodel.cpp \
-    ../CPP/ViewModel/view.cpp \
-    ../CPP/ViewModel/control.cpp \
-    ../CPP/humadity.cpp \
-    ../CPP/pressure.cpp \
-    ../CPP/temperature.cpp \
-    ../CPP/server.cpp \
-    circlestate.cpp
-
+    ../CPP/AbstractValueModel/abstractvaluemodel.cpp \
+    ../CPP/Settings/settings.cpp \
+    ../CPP/AbstractConditioner/abstractconditioner.cpp\
+    ../CPP/AbstractValueModel/ChangeStateModel/ChangeMeasurmentsModel/changemeasurment.cpp \
+    ../CPP/AbstractValueModel/ChangeStateModel/changestate.cpp \
+    ../CPP/AbstractConditioner/ClientConditioner/clientconditioner.cpp \
+    ../CPP/AbstractUDP/udpserver.cpp \
+    ../CPP/AbstrcatViewModel/abstractgui.cpp \
+    ../CPP/AbstrcatViewModel/ChangeMeasurments/changemeasurmentwidget.cpp \
+    ../CPP/AbstrcatViewModel/HandlerState/circlestate.cpp \
+    ../CPP/AbstrcatViewModel/HandlerState/handlerstate.cpp \
+    ../CPP/AbstrcatViewModel/CustomSlider/abstractcontrol.cpp \
+    ../CPP/AbstrcatViewModel/CustomSlider/Slider/slidercontrol.cpp \
+    ../CPP/AbstrcatViewModel/CustomSlider/ControlButton/controlbutton.cpp
 HEADERS += \
         widget.h \
-    settings.h \
     ../CPP/global.h \
-    conditioner.h \
-    elementongui.h \
-    ../CPP/UDP/udpclient.h \
-    ../CPP/ValueModel/valuemodel.h \
-    ../CPP/ViewModel/view.h \
-    ../CPP/ViewModel/control.h \
-    ../CPP/humadity.h \
-    ../CPP/pressure.h \
-    ../CPP/temperature.h \
-    ../CPP/server.h \
-    circlestate.h
-
-FORMS += \
-        widget.ui
+    ../CPP/AbstractValueModel/abstractvaluemodel.h \
+    modelchangestate.h \
+    ../CPP/Settings/settings.h \
+    ../CPP/AbstractConditioner/abstractconditioner.h\
+    ../CPP/AbstractValueModel/ChangeStateModel/ChangeMeasurmentsModel/changemeasurment.h \
+    ../CPP/AbstractValueModel/ChangeStateModel/changestate.h \
+    ../CPP/AbstractConditioner/ClientConditioner/clientconditioner.h \
+    ../CPP/AbstractUDP/udpserver.h \
+    ../CPP/AbstrcatViewModel/abstractgui.h \
+    ../CPP/AbstrcatViewModel/ChangeMeasurments/changemeasurmentwidget.h \
+    ../CPP/AbstrcatViewModel/HandlerState/circlestate.h \
+    ../CPP/AbstrcatViewModel/HandlerState/handlerstate.h \
+    ../CPP/AbstrcatViewModel/CustomSlider/abstractcontrol.h \
+    ../CPP/AbstrcatViewModel/CustomSlider/Slider/slidercontrol.h \
+    ../CPP/AbstrcatViewModel/CustomSlider/ControlButton/controlbutton.h

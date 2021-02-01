@@ -1,0 +1,5 @@
+QString getTypeMeasurments() const;
+
+void changeTypeMeasurment(const QString& type);
+
+void changeTypeMeasurment(const QString& type);
