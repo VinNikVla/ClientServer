@@ -12,7 +12,7 @@ public:
     UDPclient(QString _ownIp, QString _ip, int _port, QObject *parent = nullptr, int _ownPort=0);
     void Prepare();
 signals:
-    void receiveData(QByteArray ba);
+    void receiveData(QString senderIp, int senderPort, QByteArray ba);
    // void Message(Log::LoggerMsg lm,  QString message);
 public slots:
     void read();

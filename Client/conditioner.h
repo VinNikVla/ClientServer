@@ -12,6 +12,8 @@
 #include "temperature.h"
 #include "pressure.h"
 #include "humadity.h"
+#include "server.h"
+
 #include <QtGlobal>
 
 typedef union {
@@ -27,43 +29,24 @@ public:
     Conditioner(Settings* _set, const QString& _ip, const quint16& _port, QObject* parent=nullptr);
 
     ValueModel* getDetector(ControlTypes::Conditioner type);
-public slots:
-//    void changeValue(const ControlTypes::Conditioner& typeParameter, const int value);
-//    void slotChangeTypeTemperature(const QString& type);
-//    void slotChangeTypePressure(const QString& type);
-//    void slotChangeTypeHumadity(const QString& type);
 
+public slots:
     void sendCommand(const ControlTypes::Conditioner& typeParameter, const int value);
     void responseFromServer(QString senderIP, int senderPort, QByteArray data);
 
+    void slotChangeState();
 
 signals:
-//    void signalTemperatureChanged(const QString value);
-//    void signalPressureChanged(const QString value);
-//    void signalHumadityChanged(const QString value);
-
     void sendCommandToServer(QByteArray data, QString& receiver);
+    void signalChangeComlexState(const DeviceState& state);
 
 private:
     Settings* m_set;
-
-    Temperature* m_temperature;
-    Humadity* m_humadity;
-    Pressure* m_pressure;
-
-//    double m_temperature;
-//    QString typeTemperature;
-
-//    double m_pressure;
-//    QString typePressure;
-
-//    double m_humadity;
-//    QString typeHumadity;
-
-    //QMap<ControlTypes::Conditioner, double*> m_map;
-    QMap<ControlTypes::Conditioner, ValueModel*> m_map;
     QString m_ip;
     quint16 m_port;
+
+    QMap<ControlTypes::Conditioner, ValueModel*> m_map;
+
 
     QByteArray com;//отправляемый массив данных на cервер/клиент
 

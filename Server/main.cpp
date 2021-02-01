@@ -1,11 +1,14 @@
-#include <QCoreApplication>
-#include "udpserver.h"
+#include <QApplication>
+#include "UDP/udpserver.h"
+//#include "udpserver.h"
 #include "thread"
 #include "chrono"
+#include "conditionerserver.h"
+#include "gui.h"
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication a(argc, argv);
+    QApplication a(argc, argv);
 
     typedef union {
         int x;
@@ -15,35 +18,23 @@ int main(int argc, char *argv[])
 
     UDPclient* server = new UDPclient("127.0.0.1", "127.0.0.1", 1111, &a, 1112);
 
+    GUI gui;
+
     QByteArray com;
     com.reserve(5);
 
-    intToChar convert;
+    ConditionerServer* conditioner = new ConditionerServer(server, &a);
 
-    //    qDebug() << "1byte = " << convert.ch[0];
-    //    qDebug() << "2byte = " << convert.ch[1];
-    //    qDebug() << "3byte = " << convert.ch[2];
-    //    qDebug() << "4byte = " << convert.ch[3];
-    //    quint8 frst= value & 0x000000ff;
-    //    quint8 second = value & 0x0000ff00;
-    //    qDebug() << hex << frst << hex << second << hex << value;
-    for(int i = 0; i < 3; i++)
-    {
-        for(int j = -100; j < 200;j++)
+    for(auto itb = ControlTypes::command.begin(), ite = ControlTypes::command.end(); itb != ite; ++itb)
+    {   if(*itb != ControlTypes::Conditioner::OnOff)
         {
-
-            com[0] = static_cast<quint8>(i);
-            convert.x = j;
-            com[1] = convert.ch[3];
-            com[2] = convert.ch[2];
-            com[3] = convert.ch[1];
-            com[4] = convert.ch[0];
-            server->sendDataTo(com);
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            QObject::connect(gui.getControl(*itb), &Control::valueChanged, conditioner->getDetector(*itb), &ValueModel::signalValueToClient);
         }
+
     }
 
 
+    gui.show();
 
 
 

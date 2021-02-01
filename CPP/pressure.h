@@ -1,7 +1,8 @@
 #ifndef PRESSURE_H
 #define PRESSURE_H
 
-#include "valuemodel.h"
+//#include "valuemodel.h"
+#include "ValueModel/valuemodel.h"
 
 class Pressure:public ValueModel
 {

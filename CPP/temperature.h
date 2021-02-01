@@ -1,7 +1,8 @@
 #ifndef TEMPERATURE_H
 #define TEMPERATURE_H
 
-#include "valuemodel.h"
+//#include "valuemodel.h"
+#include "ValueModel/valuemodel.h"
 
 class Temperature:public ValueModel
 {

@@ -8,11 +8,32 @@ Widget::Widget(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    setWindowTitle("Кондиционер Витязь");
+
     QVBoxLayout* Vlayout = new QVBoxLayout(this);
+
+    //
+    ;
+
+
+
 
     QLabel* state = new QLabel("State", this);
     state->setFrameStyle(QFrame::Plain | QFrame::StyledPanel);
     Vlayout->addWidget(state);
+
+    QHBoxLayout* hLayout = new QHBoxLayout(this);
+
+    QLabel* stateName =  new QLabel("Комплексное состояние", this);
+    hLayout->addWidget(stateName);
+
+
+    stateCircle = new CircleState(this);
+
+    hLayout->addWidget(stateCircle);
+    hLayout->setContentsMargins(13,13,13,13);
+
+    Vlayout->addItem(hLayout);
 
     View* viewTemperature = new View(ControlTypes::Conditioner::Temperature, true, &ControlTypes::stringTypeTemperature, this);
     Vlayout->addWidget(viewTemperature);
@@ -30,24 +51,29 @@ Widget::Widget(QWidget *parent) :
     control->setFrameShape(QFrame::StyledPanel);
     Vlayout->addWidget(control);
 
-    Control* controlTemperature = new Control("ControlTemperature", ControlTypes::Conditioner::Temperature, ControlTypes::TypeControl::HorizontalSlider, this);
+    Control* controlTemperature = new Control(ControlTypes::Conditioner::Temperature, ControlTypes::TypeControl::HorizontalSlider, this);
     Vlayout->addWidget(controlTemperature);
-    controlOnGUI[controlTemperature->getName()] = controlTemperature;
+    controlOnGUI[ControlTypes::Conditioner::Temperature] = controlTemperature;
+
+
+
+    Control* controlDirection = new Control(ControlTypes::Conditioner::Direction, ControlTypes::TypeControl::HorizontalSlider, this);
+    Vlayout->addWidget(controlDirection);
+    controlOnGUI[controlDirection->getTypeDetector()] = controlDirection;
+
+
+
+    Vlayout->addWidget(new QLabel(toString(ControlTypes::Conditioner::OnOff), this));
+
+    QPushButton* requestState = new QPushButton("Отправить запрос", this);
+    Vlayout->addWidget(requestState);
 
     statusBar = new QStatusBar(this);
     Vlayout->addWidget(statusBar);
 
-//    Control* onOff = new Control("System of Conditioner", ControlTypes::TypeControl::Button, this);
-//    Vlayout->addWidget(onOff);
-//    //elementsOnGUI[viewPressure->getName()] = viewPressure;
-
-//    Control* direction = new Control("Air flow direction", ControlTypes::TypeControl::HorizontalSlider, this);
-//    Vlayout->addWidget(direction);
-    //elementsOnGUI[viewPressure->getName()] = viewPressure;
-
-
-
+    slotDisableControl();
     setLayout(Vlayout);
+
 
 }
 
@@ -55,20 +81,25 @@ View *Widget::getView(ControlTypes::Conditioner key)
 {
     if(elementsOnGUI.contains(key))
     {
-            return elementsOnGUI[key];
+        return elementsOnGUI[key];
     }
 
     qDebug() << "Unknown key " << key;
 }
 
-Control *Widget::getControl(QString key)
+Control *Widget::getControl(ControlTypes::Conditioner key)
 {
     if(controlOnGUI.contains(key))
     {
-            return controlOnGUI[key];
+        return controlOnGUI[key];
     }
 
     qDebug() << "Unknown key";
+}
+
+CircleState *Widget::getState() const
+{
+    return stateCircle;
 }
 
 Widget::~Widget()
@@ -79,10 +110,37 @@ Widget::~Widget()
 void Widget::slotActivated(QAction *pAction)
 {
     qDebug() << pAction->text();
+
 }
 
 void Widget::slotShowMessage(const QString &msg)
 {
     statusBar->showMessage(msg);
+}
+
+void Widget::slotEnabledControl()
+{
+    for(auto itb = elementsOnGUI.begin(), ite = elementsOnGUI.end(); itb != ite; ++itb)
+    {
+        itb.value()->setEnabled(true);
+    }
+
+    for(auto itb = controlOnGUI.begin(), ite = controlOnGUI.end(); itb != ite; ++itb)
+    {
+        itb.value()->setEnabled(true);
+    }
+}
+
+void Widget::slotDisableControl()
+{
+    for(auto itb = elementsOnGUI.begin(), ite = elementsOnGUI.end(); itb != ite; ++itb)
+    {
+        itb.value()->setDisabled(true);
+    }
+
+    for(auto itb = controlOnGUI.begin(), ite = controlOnGUI.end(); itb != ite; ++itb)
+    {
+        itb.value()->setDisabled(true);
+    }
 }
 

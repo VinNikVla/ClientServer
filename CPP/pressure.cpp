@@ -28,7 +28,11 @@ void Pressure::slotChangeTypeValue(const QString &type)
         tmp = QString::number(m_value * 133.) + " " + type;
     }
 
-
+    if(m_typeMeasurments != type)
+    {
+        m_typeMeasurments = type;
+        emit changeTypeMeasurment(m_typeMeasurments);
+    }
 
     m_typeMeasurments = type;
     emit signalValueChanged(tmp);

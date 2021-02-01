@@ -1,10 +1,18 @@
-QT -= gui
-QT += network
-CONFIG += c++11 console
-CONFIG -= app_bundle
+#-------------------------------------------------
+#
+# Project created by QtCreator 2021-01-30T21:25:26
+#
+#-------------------------------------------------
+
+QT       += core gui network
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+TARGET = Server
+TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
-# any feature of Qt which as been marked deprecated (the exact warnings
+# any feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
@@ -13,10 +21,34 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+INCLUDEPATH += $$PWD/../CPP/
 
 SOURCES += \
         main.cpp \
-    udpserver.cpp
+    ../CPP/UDP/udpserver.cpp \
+    ../CPP/global.cpp \
+    ../CPP/ValueModel/valuemodel.cpp \
+    conditionerserver.cpp \
+    ../CPP/humadity.cpp \
+    ../CPP/pressure.cpp \
+    ../CPP/server.cpp \
+    ../CPP/temperature.cpp \
+    gui.cpp \
+    ../CPP/ViewModel/control.cpp \
+    ../CPP/ViewModel/view.cpp
 
 HEADERS += \
-    udpserver.h
+    ../CPP/UDP/udpserver.h \
+    ../CPP/global.h \
+    ../CPP/ValueModel/valuemodel.h \
+    conditionerserver.h \
+    ../CPP/humadity.h \
+    ../CPP/pressure.h \
+    ../CPP/server.h \
+    ../CPP/temperature.h \
+    gui.h \
+    ../CPP/ViewModel/control.h \
+    ../CPP/ViewModel/view.h
+
+FORMS += \
+        gui.ui

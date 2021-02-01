@@ -17,29 +17,34 @@
 #include <QDial>
 
 #include <global.h>
+#include "ValueModel/valuemodel.h"
 
 class Control : public QWidget
 {
     Q_OBJECT
 public:
-    explicit Control(const QString& _name, const ControlTypes::Conditioner& _typeHandler, const ControlTypes::TypeControl& _type, QWidget *parent = nullptr);
+    explicit Control(const ControlTypes::Conditioner& _typeDetector, const ControlTypes::TypeControl& _type, QWidget *parent = nullptr);
     QString getName() const;
-    ~Control();
+    ControlTypes::Conditioner getTypeDetector() const;
+
 signals:
     //void valueChanged
     void valueChanged(ControlTypes::Conditioner _type, const int);
+
 public slots:
     //void response(QByteArray
+
 private slots:
     void handlerSignal(const int value);
+
 private:
     QWidget* controlWidget;
     QLabel* nameHandler;
     QLayout* layout;
-    ControlTypes::Conditioner typeHandler;
-    ControlTypes::TypeControl typeControl;
+    ControlTypes::TypeControl m_typeControl;
 
     QString m_name;
+    ControlTypes::Conditioner m_typeDetector;
     QWidget* createControlWiget(const ControlTypes::TypeControl& type);
     void createSignalForWidget();
 

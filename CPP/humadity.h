@@ -1,6 +1,7 @@
 #ifndef HUMADITY_H
 #define HUMADITY_H
-#include "valuemodel.h"
+//#include "valuemodel.h"
+#include "ValueModel/valuemodel.h"
 
 class Humadity:public ValueModel
 {

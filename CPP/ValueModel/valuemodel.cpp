@@ -7,7 +7,8 @@ ValueModel::ValueModel(const QVector<QString> *_listMeasurments, const ControlTy
     m_border(_border)
 
 {
-    m_value = 0;
+   // m_value = 0;
+    m_state = DeviceState::Unknown;
 }
 
 void ValueModel::slotSetValue(int value)
@@ -20,6 +21,9 @@ void ValueModel::slotSetValue(int value)
     m_value = value;
     slotSetState();
 
+    //разбать на 2 класса клиентские и серверные
+
+    emit signalValueToClient(m_typeDetector, m_value);
 
     slotChangeTypeValue(m_typeMeasurments);
 }
@@ -48,6 +52,8 @@ void ValueModel::slotSetState()
         return;
 
     m_state = tmp;
+
+    emit signalStateChanged();
 
 
 }

@@ -1,15 +1,14 @@
-#include "conditioner.h"
+#include "conditionerserver.h"
 
-
-
-Conditioner::Conditioner(Settings* _set, const QString &_ip, const quint16 &_port, QObject *parent):
-    QObject(parent),
-    m_set(_set),
-    m_ip(_ip),
-    m_port(_port)
+ConditionerServer::ConditionerServer(const UDPclient *udpSender, QObject *parent):
+    QObject(parent)
 {
+    QObject::connect(this, &ConditionerServer::sendResponseToClient, udpSender, &UDPclient::sendDataTo);
+    QObject::connect(udpSender, &UDPclient::receiveData, this, &ConditionerServer::requestFromClient);
 
+    m_state = ControlTypes::Server::OFF;
 
+    sendCommandToClient(ControlTypes::Conditioner::OnOff, static_cast<int>(m_state));
 
     m_map[ControlTypes::Conditioner::Temperature] = new Temperature(&ControlTypes::stringTypeTemperature,
                                                                 ControlTypes::Conditioner::Temperature,
@@ -24,7 +23,7 @@ Conditioner::Conditioner(Settings* _set, const QString &_ip, const quint16 &_por
     m_map[ControlTypes::Conditioner::Humadity] = new Humadity(&ControlTypes::stringTypeHumadity,
                                                               ControlTypes::Conditioner::Humadity,
                                                              &ControlTypes::stateHumadity,
-                                        this);
+                                                              this);
 
 
     m_map[ControlTypes::Conditioner::OnOff] = new Server(&ControlTypes::stringTypeServer,
@@ -32,38 +31,27 @@ Conditioner::Conditioner(Settings* _set, const QString &_ip, const quint16 &_por
                                                          &ControlTypes::stateServer,
                                                          this);
 
-
-
-    m_map[ControlTypes::Conditioner::Temperature]->slotChangeTypeValue(m_set->getTypeTemperature());
-    m_map[ControlTypes::Conditioner::Pressure]->slotChangeTypeValue(m_set->getTypePressure());
-    m_map[ControlTypes::Conditioner::Humadity]->slotChangeTypeValue(m_set->getTypeHumadity());
-
-    QObject::connect(m_map[ControlTypes::Conditioner::Temperature], &ValueModel::changeTypeMeasurment, m_set, &Settings::setTypeTemperature);
-    QObject::connect(m_map[ControlTypes::Conditioner::Pressure], &ValueModel::changeTypeMeasurment, m_set, &Settings::setTypePressure);
-
-    com.reserve(5);//зарезервировал в отправляемом массиве 5 байт
-
-    for(auto itb = ControlTypes::state.begin(), ite = ControlTypes::state.end(); itb != ite; ++itb)
+    for(auto itb = ControlTypes::command.begin(), ite = ControlTypes::command.end(); itb != ite; ++itb)
     {
-        if(m_map.contains(*itb))
-        QObject::connect(m_map[*itb], &ValueModel::signalStateChanged, this, &Conditioner::slotChangeState);
+        QObject::connect(this->m_map[*itb], &ValueModel::signalValueToClient, this, &ConditionerServer::sendCommandToClient);
     }
+
+
 }
 
-ValueModel *Conditioner::getDetector(ControlTypes::Conditioner type)
+ValueModel *ConditionerServer::getDetector(ControlTypes::Conditioner type)
 {
     if(m_map.contains(type))
     {
-                qDebug() << "Подключение сигналов и слотов" << m_map[type]->getTypeDetector();
+                qDebug() << "Подключение сигналов и слотов логика" << m_map[type]->getTypeDetector();
         return m_map[type];
+
 
     }
     qDebug() << "Unknown key " << type;
 }
 
-
-
-void Conditioner::sendCommand(const ControlTypes::Conditioner &typeParameter, const int value)
+void ConditionerServer::sendCommandToClient(const ControlTypes::Conditioner &typeParameter, const int value)
 {
     qDebug() << typeParameter << " " << value << " " << sizeof(value);
 
@@ -77,14 +65,21 @@ void Conditioner::sendCommand(const ControlTypes::Conditioner &typeParameter, co
     com[3] = convert.ch[1];
     com[4] = convert.ch[0];
 
-    emit sendCommandToServer(com, m_ip);
+    emit sendResponseToClient(com);
 }
 
-void Conditioner::responseFromServer(QString senderIP, int senderPort, QByteArray data)
+void ConditionerServer::requestFromClient(QString senderIP, int senderPort, QByteArray data)
 {
     //Если порт и адрес не принадлежат серверу выходим
+//    if(senderIP != m_IP && senderPort != m_Port)
+//    {
+//        qDebug() << "Попыка управления кондиционером с не установленного IP";
+//        return;
+//    }
+
     Q_UNUSED(senderIP)
     Q_UNUSED(senderPort)
+
     if(data.size() != 5)
     {
         qDebug() << "Неверный формат пакета!!!";
@@ -110,19 +105,3 @@ void Conditioner::responseFromServer(QString senderIP, int senderPort, QByteArra
 
 
 }
-
-void Conditioner::slotChangeState()
-{
-     DeviceState tmp = DeviceState::Green;
-
-    for(auto itb = ControlTypes::state.begin(), ite = ControlTypes::state.end(); itb != ite; ++itb)
-    {
-        if(m_map.contains(*itb))
-            tmp = tmp + m_map[*itb]->getState();
-    }
-
-    emit signalChangeComlexState(tmp);
-
-}
-
-

@@ -22,6 +22,10 @@ public slots:
 signals:
     void signalStateChanged();
     void signalValueChanged(const QString& value);
+    void signalServerConnected();
+    void signalValueToClient(const ControlTypes::Conditioner, const int);
+
+    void changeTypeMeasurment(const QString& type);
 
 protected:
     QString m_typeMeasurments;

@@ -59,10 +59,12 @@ void UDPclient::read()
     {
         QNetworkDatagram datagram=sock->receiveDatagram();
         QByteArray datagramm=datagram.data();
+        QString SenderIP=datagram.senderAddress().toString();
+        int SenderPort=datagram.senderPort();
         if (datagramm.length()>0)
         {
             qDebug() << datagramm;
-            emit receiveData(datagramm);
+            emit receiveData(SenderIP, SenderPort, datagramm);
         }
     }
 

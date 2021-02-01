@@ -24,6 +24,8 @@ public:
     void setTypeTemperature(const QString& temperature);
     void setTypeHumadity(const QString& humadity);
 
+    //void setType(ControlTypes::Conditioner, QStri)
+
 
 private:
     QString typeTemperature;
